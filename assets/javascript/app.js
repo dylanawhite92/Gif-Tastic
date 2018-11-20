@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     function renderButtons() {
 
-        $("#games-display").empty();
+        $("#game-buttons").empty();
 
         for (var i = 0; i < topics.length; i++) {
             var newButton = $("<button>").text(topics[i]);
@@ -44,6 +44,9 @@ $(document).ready(function () {
                 image.attr("class", "gif");
                 displayDiv.append(image);
 
+                var rating = $("<p> Rating: " + (response.data[i].rating) + "</p>");
+                displayDiv.prepend(rating); 
+
                 $("#games-display").append(displayDiv);
             }
         });
@@ -62,18 +65,17 @@ $(document).ready(function () {
         };
     };
 
-    // function gameButtonClicked() {
-    //     var userInput = $("#game-input").val();
-    //     searchGif(userInput);
-    // };
+    $("#add-game").on("click", function() {
+        event.preventDefault();
 
-    // function submitButtonClicked() {
-    //     var userInput = $("#game-input").val();
-        
-    //     if (userInput) {
-    //         $("#game-buttons").append(`<button type = 'button' onclick = 'searchGif(${userInput})' value = '${userInput}'>${userInput}</button>`);
-    //     };
-    // };
+        var userInput = $("#game-input").val().trim();
+
+        $("#game-input").val("");
+
+        topics.push(userInput);
+
+        renderButtons();
+    });
 
     renderButtons();
 
