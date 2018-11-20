@@ -9,20 +9,23 @@
     <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" /> 
 </head>
 <body>
-    <div class = "container">
-        <div id = "game-buttons"></div>
-
-        <form id = "game-form">
-            <label for = "game-input">Add a Game You Like!</label>
-            <input type = "text" id = "game-input">
-            <br>
-            <input id = "add-game" type = "submit" value = "Submit">
-        </form>
-
-        <div id = "games"></div>
+    <div class = "row">
+        <div class = "col-md-12" id = "game-buttons"></div>
+    </div>
+    <div class = "row">
+        <div class = "col-md-9" id = "games-display"></div>
+        <div class = "col-md-3">
+            <form id = "game-form">
+                <label for = "game-input">Add a Game You Like!</label>
+                <input type = "text" id = "game-input">
+                <br>
+                <input id = "add-game" type = "submit" value = "Submit">
+            </form>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="assets/javascript/app.js"></script>
 </body>
 </html>

@@ -3,33 +3,81 @@ $(document).ready(function () {
     var topics = [
         "Golden Sun", "Overwatch", "Dark Souls", "Cuphead", "Legend of the Dragoon", 
         "World of Warcraft", "Destiny 2", "Fallout", "Bloodborne", "Katamari Damacy", "Doom",
-        "Skyrim", "Final Fantasy", "Street Fighter", "The Sims", "Undertale", "Mortal Kombat"
+        "Skyrim", "Final Fantasy", "Street Fighter", "Undertale", "Mortal Kombat"
     ];
 
-    for (var i = 0; i < topics.length; i++) {
-        $("#game-buttons").append(`<button type = 'button' onclick = 'searchGif(${topics[i]})' value = '${topics[i]}'>${topics[i]}</button>`);        
-    };
+    function renderButtons() {
 
-    function gameButtonClicked() {
-        var userInput = $("#game-input").val();
-        searchGif(userInput);
-    };
+        $("#games-display").empty();
 
-    function submitButtonClicked() {
-        var userInput = $("#game-input").val();
-        
-        if (userInput) {
-            $("#game-buttons").append(`<button type = 'button' onclick = 'searchGif(${userInput})' value = '${userInput}'>${userInput}</button>`);
+        for (var i = 0; i < topics.length; i++) {
+            var newButton = $("<button>").text(topics[i]);
+            newButton.addClass("game");
+            newButton.attr("data-name", topics[i]);
+            newButton.text(topics[i]);
+            $("#game-buttons").append(newButton);
         };
     };
 
-    function searchGif() {
+    function displayGif() {
 
+        $("#games-display").empty();
+
+        var userInput = $(this).attr("data-name");
+        var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + userInput + "&api_key=r1K1ocm0NTdNc3AE66KaZ1zs0YVPlgmW&limit=10";
+
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).done(function(response) {
+            console.log(response);
+
+            for (var i = 0; i < response.data.length; i++) {
+                var displayDiv = $("<div>");
+                displayDiv.addClass("holder");
+
+                var image = $("<img>");
+                image.attr("src", response.data[i].images.fixed_height_still.url);
+                image.attr("data-still", response.data[i].images.fixed_height_still.url);
+                image.attr("data-animate", response.data[i].images.fixed_height.url);
+                image.attr("data-state", "still");
+                image.attr("class", "gif");
+                displayDiv.append(image);
+
+                $("#games-display").append(displayDiv);
+            }
+        });
     };
 
-    function displayGif(response) {
+    function imageChangeState() {
+        var state = $(this).attr("data-state");
 
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        }
+        else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("date-state", "still");
+        };
     };
 
-    var queryURL = "";
+    // function gameButtonClicked() {
+    //     var userInput = $("#game-input").val();
+    //     searchGif(userInput);
+    // };
+
+    // function submitButtonClicked() {
+    //     var userInput = $("#game-input").val();
+        
+    //     if (userInput) {
+    //         $("#game-buttons").append(`<button type = 'button' onclick = 'searchGif(${userInput})' value = '${userInput}'>${userInput}</button>`);
+    //     };
+    // };
+
+    renderButtons();
+
+    $(document).on("click", ".game", displayGif);
+    $(document).on("click", ".gif", imageChangeState);
+
 });
